@@ -1,5 +1,21 @@
 
+Function compareName(){
+//Todo
+}
 
- .... hello ... it is to test
 
-   from mac
+async function save() {
+  saveLoading.process(async () => {
+    await pipelineStore.updatePipeline(null, {
+      name: name.value,
+      beamConfigIds: beamConfigIds.value,
+      gcpEnvID: gcpEnvID.value,
+      databaseServerID: databaseServerID.value,
+      databaseID: databaseID.value,
+      bigQueryConfiguration: bigQueryConfiguration.value,
+      templateConfiguration: templateConfiguration.value,
+	console.log("test)"
+    });
+    onDialogOK();
+  });
+}

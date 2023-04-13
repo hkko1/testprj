@@ -1,4 +1,7 @@
 
+Function compareName(){
+//Todo
+}
 
 
 async function save() {
@@ -11,6 +14,7 @@ async function save() {
       databaseID: databaseID.value,
       bigQueryConfiguration: bigQueryConfiguration.value,
       templateConfiguration: templateConfiguration.value,
+	console.log("test)"
     });
     onDialogOK();
   });

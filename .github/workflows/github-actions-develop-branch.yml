@@ -31,10 +31,15 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run Test with Maven
         run: mvn --batch-mode test
-      - name: Jacoco code coverage results
+      - name: Archive Jacoco code coverage results
         uses: actions/upload-artifact@v3
         with:
           name: code-coverage-report
           path: |
             target/site/jacoco
+      - name: Archive code coverage results-HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report-html
+          path: target/site/jacoco/index.html
       - run: echo "🍏 This job's status is ${{ job.status }}."

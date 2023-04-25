@@ -6,7 +6,6 @@ on:
       - "develop"
 jobs:
   GitHub-Develop-Branch-Actions:
-    if: github.repository == 'develop'
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."

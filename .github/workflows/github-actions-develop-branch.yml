@@ -35,10 +35,9 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist-without-markdown
+          name: target-site-jacoco
           path: |
-            dist
-            !dist/**/*.md
+            target/site/jacoco
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:

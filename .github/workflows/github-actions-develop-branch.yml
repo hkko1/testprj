@@ -31,4 +31,4 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Run Test with Maven
-        run: mvn test
+        run: mvn --batch-mode compile test

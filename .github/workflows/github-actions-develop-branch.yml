@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-      content: read
+      contents: read
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"

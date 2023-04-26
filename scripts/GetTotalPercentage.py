@@ -1,6 +1,16 @@
 import csv
+import sys
 
-jacoco_csv_file = 'target/site/jacoco/jacoco.csv'
+
+if len(sys.argv) != 2:
+    print("Insufficient argements")
+    sys.exit()
+
+file_path = sys.argv[1]
+#print('file_path:{0}'.format(file_path))
+
+#jacoco_csv_file = 'target/site/jacoco/jacoco.csv'
+jacoco_csv_file = file_path
 with open(jacoco_csv_file) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
@@ -17,4 +27,4 @@ with open(jacoco_csv_file) as csv_file:
 
         line_count += 1
     total_coverage = 100.0 * number_of_covered / number_of_total
-    print('Total coverage: {1:.2f}%'.format(line_count, total_coverage))
+    print('Total coverage:: {1:.2f}%'.format(line_count, total_coverage))

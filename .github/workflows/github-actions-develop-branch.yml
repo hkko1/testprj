@@ -40,8 +40,7 @@ jobs:
       - run: cat target/site/jacoco/jacoco.csv
       - name: Get total coverage percent
         run: |
-          python GetTotalPercentage.py
-          echo "total_coverage=$(python GetTotalPercentage.py)" >> "$GITHUB_ENV"
+          echo "total_coverage=$(python scripts/GetTotalPercentage.py)" >> "$GITHUB_ENV"
       - name: Add PR Comment
         uses: mshick/add-pr-comment@v2
         with:

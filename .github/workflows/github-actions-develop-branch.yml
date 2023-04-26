@@ -27,7 +27,7 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Run Test with Maven
+      - name: Run Junit Test
         run: mvn --batch-mode test
       - name: Archive Jacoco code coverage results
         uses: actions/upload-artifact@v3
@@ -37,4 +37,5 @@ jobs:
             target/site/jacoco
       - run: python --version
       - run: cat target/site/jacoco/jacoco.csv
+      - run: python GetTotalPercentage.py
       - run: echo "🍏 This job's status is ${{ job.status }}."

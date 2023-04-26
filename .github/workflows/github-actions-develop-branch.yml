@@ -35,7 +35,6 @@ jobs:
           name: code-coverage-report
           path: |
             target/site/jacoco
-      - run: python --version
       - run: cat target/site/jacoco/jacoco.csv
       - run: python GetTotalPercentage.py
       - run: echo "🍏 This job's status is ${{ job.status }}."

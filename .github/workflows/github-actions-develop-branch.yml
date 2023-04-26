@@ -38,12 +38,13 @@ jobs:
           path: |
             target/site/jacoco
       - run: cat target/site/jacoco/jacoco.csv
-      - run: python GetTotalPercentage.py
+      - name: Get total coverage percent
+        run: |
+          total_coverage=$(python GetTotalPercentage.py)
+          echo $total_coverage >> "$GITHUB_ENV"
       - name: Add PR Comment
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Hello3**
-            🌏
-            !
+            ${{env.total_coverage}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

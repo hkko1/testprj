@@ -5,6 +5,8 @@ on: [pull_request]
 jobs:
   base_branch_cov:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -37,4 +39,11 @@ jobs:
             target/site/jacoco
       - run: cat target/site/jacoco/jacoco.csv
       - run: python GetTotalPercentage.py
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            **Hello**
+            🌏
+            !
       - run: echo "🍏 This job's status is ${{ job.status }}."

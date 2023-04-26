@@ -45,6 +45,6 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            033[1mCode coverage report033[0m
+            ** Code coverage report **
             ${{env.total_coverage}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

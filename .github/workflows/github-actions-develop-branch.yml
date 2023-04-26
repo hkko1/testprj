@@ -1,11 +1,9 @@
-name: GitHub Actions Demo
+name: Code Coverage
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on:
-  push:
-    branches:
-      - "develop"
+on: [pull_request]
+
 jobs:
-  GitHub-Develop-Branch-Actions:
+  base_branch_cov:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."
@@ -37,9 +35,6 @@ jobs:
           name: code-coverage-report
           path: |
             target/site/jacoco
-      - name: Archive code coverage results-HTML
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-report-html
-          path: target/site/jacoco/index.html
+      - run: python --version
+      - run: cat target/site/jacoco/jacoco.csv
       - run: echo "🍏 This job's status is ${{ job.status }}."

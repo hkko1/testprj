@@ -29,4 +29,4 @@ with open(jacoco_csv_file) as csv_file:
     #total_coverage = 100.0 * number_of_covered / number_of_total
     #print('Total coverage:: {1:.2f}%'.format(line_count, total_coverage))
     total_coverage = 100 * number_of_covered / number_of_total
-    print('Total coverage:: {1}%'.format(line_count, total_coverage))
+    print('Total coverage:: {1}%'.format(line_count, int(total_coverage))

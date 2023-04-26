@@ -43,12 +43,13 @@ jobs:
       - name: Get total coverage percent
         run: |
           echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+          echo "color=brightgreen" >> "$GITHUB_ENV"
       - name: Add PR Comment
         uses: mshick/add-pr-comment@v2
         with:
           message: |
             ## Total code coverage report
-            ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}})
+            ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}}%${{env.color}})
             ![image](https://img.shields.io/badge/cdc--change--applier-41%25-brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}

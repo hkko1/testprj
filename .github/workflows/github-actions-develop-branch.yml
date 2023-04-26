@@ -47,7 +47,7 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            ## Total code coverage report___
+            ## Total code coverage report
             ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}})
             ![image](https://img.shields.io/badge/cdc--change--applier-41%25-brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)

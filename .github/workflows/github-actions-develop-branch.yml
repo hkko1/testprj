@@ -1,9 +1,9 @@
-name: Code Coverage
+name: Generate report
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [pull_request]
 
 jobs:
-  base_branch_cov:
+  Code_coverage:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -45,5 +45,6 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
+            033[1mCode coverage report033[0m
             ${{env.total_coverage}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

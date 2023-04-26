@@ -29,4 +29,17 @@ with open(jacoco_csv_file) as csv_file:
     #total_coverage = 100.0 * number_of_covered / number_of_total
     #print('Total coverage:: {1:.2f}%'.format(line_count, total_coverage))
     total_coverage = 100 * number_of_covered / number_of_total
-    print('{1}'.format(line_count, int(total_coverage)))
+    value = int(total_coverage)
+    color = 'red'
+    if value >= 90 :
+        color = 'brightgreen'
+    elif value >= 70 :
+        color = 'green'
+    elif value >= 50 :
+        color = 'yellowgreen'
+    elif value >= 30 :
+        color = 'yellow'
+    else value >= 10 :
+        color = 'orange'
+
+    print('{1}%{color}'.format(int(total_coverage),color))

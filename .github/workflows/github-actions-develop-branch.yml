@@ -1,9 +1,9 @@
-name: Code Coverage
+name: Generate report
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [pull_request]
 
 jobs:
-  base_branch_cov:
+  Code_coverage:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -38,12 +38,13 @@ jobs:
           path: |
             target/site/jacoco
       - run: cat target/site/jacoco/jacoco.csv
-      - run: python GetTotalPercentage.py
+      - name: Get total coverage percent
+        run: |
+          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
       - name: Add PR Comment
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            **Hello**
-            🌏
-            !
+            ** Code coverage report **
+            ${{env.total_coverage}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

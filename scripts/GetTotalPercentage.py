@@ -42,4 +42,4 @@ with open(jacoco_csv_file) as csv_file:
     elif value >= 10 :
         color = 'orange'
 
-    print('{0}%{1}'.format(int(total_coverage), color))
+    print('{0}%25-{1}'.format(int(total_coverage), color))

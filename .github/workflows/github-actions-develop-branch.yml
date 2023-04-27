@@ -6,9 +6,7 @@ jobs:
   job_1:
     name: Code_coverage
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: read
+    permissions: write
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -53,14 +51,6 @@ jobs:
             ![image](https://img.shields.io/badge/cdc--change--applier-41%brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-
-  job_2:
-    name: Code_coverage
-    needs: job_1
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
       - name: Pull request artifacts
         if: ${{ github.event_name == 'pull_request' }}
         uses: gavv/pull-request-artifacts@v1.0.0
@@ -70,3 +60,5 @@ jobs:
           artifacts-branch: ${{ github.ref }}
           artifacts: |
             target/site/jacoco/jacoco.csv
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+

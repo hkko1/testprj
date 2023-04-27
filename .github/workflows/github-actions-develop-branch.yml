@@ -61,6 +61,6 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts-branch: ${{ github.ref }}
           artifacts: |
-            target/site/jacoco
+            target/site/jacoco/jacoco.csv
       - run: echo "🍏 This job's status is ${{ job.status }}."
 

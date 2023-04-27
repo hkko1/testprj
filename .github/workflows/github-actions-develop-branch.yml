@@ -53,14 +53,13 @@ jobs:
             ![image](https://img.shields.io/badge/cdc--change--applier-41%brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}
-      - name: Pull request artifacts
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: gavv/pull-request-artifacts@v1.0.0
+      - name: add artifact links to pull request and related issues step
+        uses: tonyhallett/artifacts-url-comments@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commit: ${{ github.event.pull_request.head.sha }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts-branch: ${{ github.head_ref }}
-          artifacts: |
-            target/site/jacoco
+          prefix: Here are the artifacts
+          suffix: Have a nice day.
+          format: name
+          addTo: pullandissues
       - run: echo "🍏 This job's status is ${{ job.status }}."
-

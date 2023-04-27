@@ -49,8 +49,8 @@ jobs:
         with:
           message: |
             ## Total code coverage report
-            ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}}%${{env.color}})
-            ![image](https://img.shields.io/badge/cdc--change--applier-41%25-brightgreen)
+            ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}})
+            ![image](https://img.shields.io/badge/cdc--change--applier-41%brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

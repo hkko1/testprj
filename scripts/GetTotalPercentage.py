@@ -26,5 +26,20 @@ with open(jacoco_csv_file) as csv_file:
             number_of_total += missed + covered
 
         line_count += 1
-    total_coverage = 100.0 * number_of_covered / number_of_total
-    print('Total coverage:: {1:.2f}%'.format(line_count, total_coverage))
+    #total_coverage = 100.0 * number_of_covered / number_of_total
+    #print('Total coverage:: {1:.2f}%'.format(line_count, total_coverage))
+    total_coverage = 100 * number_of_covered / number_of_total
+    value = int(total_coverage)
+    color = 'red'
+    if value >= 90 :
+        color = 'brightgreen'
+    elif value >= 70 :
+        color = 'green'
+    elif value >= 50 :
+        color = 'yellowgreen'
+    elif value >= 30 :
+        color = 'yellow'
+    elif value >= 10 :
+        color = 'orange'
+
+    print('{0}%25-{1}'.format(int(total_coverage), color))

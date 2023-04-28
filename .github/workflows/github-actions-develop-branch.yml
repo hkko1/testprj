@@ -3,14 +3,17 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [pull_request]
 
 jobs:
-  Code_coverage:
+  job_1:
+    name: Code_coverage
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
     steps:
       - run: echo "🎉 develop The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "github base ref is ${{ github.base_ref }}."
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
@@ -45,6 +48,18 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            ** Code coverage report **
+            ## Total code coverage report
+            ![image](https://img.shields.io/badge/cdc--common-${{env.total_coverage}})
+            ![image](https://img.shields.io/badge/cdc--change--applier-41%brightgreen)
+            ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}
+      - name: add artifact links to pull request and related issues step
+        uses: tonyhallett/artifacts-url-comments@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prefix: Here are the artifacts
+          suffix: Have a nice day.
+          format: name
+          addTo: pullandissues
       - run: echo "🍏 This job's status is ${{ job.status }}."

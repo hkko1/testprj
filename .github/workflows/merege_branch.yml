@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
       - name: Print github.ref and github.base_ref
-        run: echo "github.ref is ${{ github.ref }}. github.base_ref is ${{ github.base_ref }}"
+        run: echo "REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 

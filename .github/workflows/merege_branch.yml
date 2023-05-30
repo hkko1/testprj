@@ -33,8 +33,11 @@ jobs:
             echo "color=blue" >> "$GITHUB_ENV"
             echo "*** without -rc *** : ${{ github.base_ref }}"
           fi
-          echo "${{ env.test_name }}"
-          echo "${{ env.color }}"
+
+      - name: Print the namge
+        run: |
+          echo "test-name : ${{ env.test_name }}"
+          echo "color: ${{ env.color }}"
 
       - name: Check out repository code
         uses: actions/checkout@v3

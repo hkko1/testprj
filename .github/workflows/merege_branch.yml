@@ -36,7 +36,7 @@ jobs:
 
       - name: Print the namge
         run: |
-          echo "test-name : ${{ env.test_name }}"
+          echo "test-name : ${{ ${{env.test_name}} }}"
           echo "color: ${{ env.color }}"
 
       - name: Check out repository code

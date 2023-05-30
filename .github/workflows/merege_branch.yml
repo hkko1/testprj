@@ -25,13 +25,17 @@ jobs:
       - name: Get name depending on if clause
         run: |
           if [[ "${{ github.ref }}" == *"-rc"* ]]; then
-            echo "test_name=github.ref" >>  "$GITHUB_ENV"
+            echo "test_name=github.ref" >> "$GITHUB_ENV"
+            echo "color=yellow" >> "$GITHUB_ENV"
             echo "*** include -rc *** : ${{ github.ref }}"
           else
             echo "test_name=github.base_ref" >>  "$GITHUB_ENV"
-          echo "*** without -rc *** : ${{ github.base_ref }}"
+            echo "color=blue" >> "$GITHUB_ENV"
+            echo "*** without -rc *** : ${{ github.base_ref }}"
           fi
           echo "Result is - ${{ env.test_name }}"
+          echo "Color is - ${{ env.color }}"
+
       - name: Check out repository code
         uses: actions/checkout@v3
 

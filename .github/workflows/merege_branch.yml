@@ -19,9 +19,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
-        with:
+        with: |
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
+          if [[ "${{ github.ref }}" == *"-rc"* ]]; then
+            java-version: '11'
+          else
+            java-version: '18'
       - name: Print github.ref and github.base_ref
         run: |
           if [[ "${{ github.ref }}" == *"-rc"* ]]; then

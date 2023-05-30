@@ -21,6 +21,17 @@ jobs:
         if: ${{!contains(github.ref, '-rc')}}
         run: echo "This is production project - ${{ github.ref }}"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+      - name: Get name depending on if clause
+        run: |
+          if [[ "${{ github.ref }}" == *"-rc"* ]]; then
+            echo "test_name=github.ref" >>  "$GITHUB_ENV"
+            echo "*** include -rc *** : ${{ github.ref }}"
+          else
+            echo "test_name=github.base_ref" >>  "$GITHUB_ENV"
+          echo "*** without -rc *** : ${{ github.base_ref }}"
+          fi
+          echo "Result is - ${{ env.test_name }}"
       - name: Check out repository code
         uses: actions/checkout@v3
 

@@ -27,13 +27,13 @@ jobs:
       - name: Set up JDK for RC
         if: contains(${{ github.ref }}, '-rc')
         uses: actions/setup-java@v3
-        with: |
+        with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
 
       - name: Set up JDK without RC
         uses: actions/setup-java@v3
-        with: |
+        with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '18'
 

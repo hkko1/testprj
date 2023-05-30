@@ -25,9 +25,9 @@ jobs:
       - name: Print github.ref and github.base_ref
         run: |
           if [[ "${{ github.ref }}" == *"-rc"* ]]; then
-            echo "DEVELOP project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
+            echo "*** DEVELOP project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
           else
-            echo "PRODUCTION project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
+            echo "*** PRODUCTION project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
           fi
       - run: echo "🍏 This job's status is ${{ job.status }}."
 

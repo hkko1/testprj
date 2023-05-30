@@ -18,7 +18,7 @@ jobs:
         if: contains(github.ref, '-rc')
         run: echo "This is develop project - ${{ github.ref }}"
       - name: version without -rc
-        if: '!contains(github.ref, "-rc")'
+        if: ${{!contains(github.ref, '-rc')}}
         run: echo "This is production project - ${{ github.ref }}"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code

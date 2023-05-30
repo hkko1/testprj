@@ -2,10 +2,10 @@ name: Update Images and Template
 run-name: ${{ github.actor }} is doing to update connector and applier 🚀
 on:
   push:
-    branches:
-      - 'main'
-      - 'develop'
-      - 'feature/**'
+    tags:
+      - v1.0.0
+      - v1.0.0-rc1
+
 jobs:
   job_1:
     name: Setting up

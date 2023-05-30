@@ -14,17 +14,30 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: version with -rc
+        if: contains(${{ github.ref }}, '-rc')
+        run: echo "This is develop project - ${{ github.ref }}"
+      - name: version without -rc
+        if: !contains(${{ github.ref }}, '-rc')
+        run: echo "This is production project - ${{ github.ref }}"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Set up JDK
+
+      - name: Set up JDK for RC
+        if: contains(${{ github.ref }}, '-rc')
         uses: actions/setup-java@v3
         with: |
           distribution: 'temurin' # See 'Supported distributions' for available options
-          if [[ "${{ github.ref }}" == *"-rc"* ]]; then
-            java-version: '11'
-          else
-            java-version: '18'
+          java-version: '11'
+
+      - name: Set up JDK without RC
+        if: !contains(${{ github.ref }}, '-rc')
+        uses: actions/setup-java@v3
+        with: |
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '18'
+
       - name: Print github.ref and github.base_ref
         run: |
           if [[ "${{ github.ref }}" == *"-rc"* ]]; then

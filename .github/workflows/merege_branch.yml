@@ -29,9 +29,9 @@ jobs:
             echo "color=yellow" >> "$GITHUB_ENV"
             echo "*** include -rc *** : ${{ github.ref }}"
           else
-            echo "test_name=${{github.base_ref}}" >>  "$GITHUB_ENV"
+            echo "test_name=${{github.repository}}" >>  "$GITHUB_ENV"
             echo "color=blue" >> "$GITHUB_ENV"
-            echo "*** without -rc *** : ${{ github.base_ref }}"
+            echo "*** without -rc *** : ${{ github.repository }}"
           fi
 
       - name: Print the namge

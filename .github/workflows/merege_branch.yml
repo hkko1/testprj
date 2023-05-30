@@ -3,8 +3,8 @@ run-name: ${{ github.actor }} is doing to update connector and applier 🚀
 on:
   push:
     tags:
-      - v1.0.0
-      - v1.0.0-rc1
+      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
 
 jobs:
   job_1:

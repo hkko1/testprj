@@ -32,7 +32,7 @@ jobs:
           java-version: '11'
 
       - name: Set up JDK without RC
-        if: !contains(${{ github.ref }}, '-rc')
+        if: ${{!contains(${{ github.ref }}, '-rc')}}
         uses: actions/setup-java@v3
         with: |
           distribution: 'temurin' # See 'Supported distributions' for available options

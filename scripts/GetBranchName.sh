@@ -6,16 +6,16 @@ then
   TAG="Undefined"
 else
   GITHUB_REF=$1
+  PROJECT_TYPE=$2
 
-  if [[ "$GITHUB_REF" == *"-rc"* ]]
+  if [[ "$PROJECT_TYPE" == *"-rc"* ]]
   then
-    TAG="develop"
     PROJECT="dev"
   else
-    TAG="main"
     PROJECT="prod"
   fi
 
+  TAG=`echo $GITHUB_REF | sed 's/refs\/tags\///g'`
   echo "branch is $GITHUB_REF"
   echo "NEWTAG is $TAG"
 fi
@@ -24,4 +24,4 @@ echo "branch is $GITHUB_REF"
 echo "NEWTAG is $TAG"
 echo "PROJECT is $PROJECT"
 
-cp test.txt ./project_$PROJECT/test_$PROJECT.txt
+

@@ -63,6 +63,18 @@ jobs:
           else
             echo "*** PRODUCTION project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
           fi
+
+      - name: Run script
+        run: |
+          if [[ "${{ github.ref }}" != *"-rc"* ]]; then 
+          #            ./scripts/update-connector.sh ${{ github.ref }} PRODUCTION
+            ./scripts/GetBranchName.sh ${{ github.ref }} PRODUCTION
+            echo "Production-update image build-connector" #del
+          else  #del
+            echo "It is develop project." #del
+            ./scripts/GetBranchName.sh ${{ github.ref }} DEVELOP
+          fi
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
 

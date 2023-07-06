@@ -7,75 +7,66 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
 
 jobs:
-  job_1:
+  job1:
     name: Setting up
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
-      - name: version with -rc
-        if: contains(github.ref, '-rc')
-        run: echo "This is develop project - ${{ github.ref }}"
-      - name: version without -rc
-        if: ${{!contains(github.ref, '-rc')}}
-        run: echo "This is production project - ${{ github.ref }}"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
-      - name: Get name depending on if clause
-        run: |
-          if [[ "${{ github.ref }}" == *"-rc"* ]]; then
-            echo "test_name=${{github.ref}}" >> "$GITHUB_ENV"
-            echo "color=yellow" >> "$GITHUB_ENV"
-            echo "*** include -rc *** : ${{ github.ref }}"
-          else
-            echo "test_name=${{github.repository}}" >>  "$GITHUB_ENV"
-            echo "color=blue" >> "$GITHUB_ENV"
-            echo "*** without -rc *** : ${{ github.repository }}"
-          fi
-
-      - name: Print the namge
-        run: |
-          echo "test-name : ${{ env.test_name }}"
-          echo "color: ${{ env.color }}"
-
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Set up JDK for RC
-        if: contains(github.ref, '-rc')
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
-
-      - name: Set up JDK without RC
-        if: ${{!contains(github.ref, '-rc')}}
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '18'
 
-      - name: Print github.ref and github.base_ref
+      - name: Run Junit Test
+        run: mvn --batch-mode test
+      - name: Archive Jacoco code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: |
+            target/site/jacoco
+
+      - run: echo "🍏 Job1's status is ${{ job.status }}."
+
+  job2-a:
+    name: upload for develop
+    needs: job1
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - run: cat target/site/jacoco/jacoco.csv
+      - name: Get total coverage percent
         run: |
-          if [[ "${{ github.ref }}" == *"-rc"* ]]; then
-            echo "*** DEVELOP project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
-          else
-            echo "*** PRODUCTION project: REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
-          fi
+          echo "[DEVELOP] total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+      - name: Comment
+        run: echo "## [DEVELOP] Total code coverage report is ${{env.total_coverage}}"
 
-      - name: Run script
+      - run: echo "🍏 Job2-a's status is ${{ job.status }}."
+
+  job2-b:
+    name: upload for production if rc is not present in tag
+    needs: job1
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - run: cat target/site/jacoco/jacoco.csv
+
+      - name: Get total coverage percent
+        if: ${{!contains(github.ref, '-rc')}}
         run: |
-          if [[ "${{ github.ref }}" != *"-rc"* ]]; then 
-          #            ./scripts/update-connector.sh ${{ github.ref }} PRODUCTION
-            ./scripts/GetBranchName.sh ${{ github.ref }} PRODUCTION
-            echo "Production-update image build-connector" #del
-          else  #del
-            echo "It is develop project." #del
-            ./scripts/GetBranchName.sh ${{ github.ref }} DEVELOP
-          fi
+          echo "[PRODUCTION] total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Comment
+        if: ${{!contains(github.ref, '-rc')}}
+        run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"
 
-
-
+      - run: echo "🍏 Job2-a's status is ${{ job.status }}."

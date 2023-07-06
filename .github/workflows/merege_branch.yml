@@ -33,6 +33,8 @@ jobs:
           path: |
             target/site/jacoco
 
+      - run: cat target/site/jacoco/jacoco.csv
+
       - run: echo "🍏 Job1's status is ${{ job.status }}."
 
   job2-a:

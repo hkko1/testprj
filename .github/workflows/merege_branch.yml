@@ -70,6 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    if: ${{!contains(github.ref, '-rc')}}
     steps:
       - uses: actions/checkout@v3
 
@@ -81,12 +82,10 @@ jobs:
       - run: cat target/site/jacoco/jacoco.csv
 
       - name: Get total coverage percent
-        if: ${{!contains(github.ref, '-rc')}}
         run: |
           echo "[PRODUCTION] total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
 
       - name: Comment
-        if: ${{!contains(github.ref, '-rc')}}
         run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"
 
       - run: echo "🍏 Job2-a's status is ${{ job.status }}."

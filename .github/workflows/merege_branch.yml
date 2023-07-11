@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '18'
+          java-version: '11'
 
       - name: Run Junit Test
         run: mvn --batch-mode test
@@ -62,6 +62,9 @@ jobs:
       - name: Comment
         run: echo "## [DEVELOP] Total code coverage report is ${{env.total_coverage}}"
 
+      - name: Run Junit Test-Job2-a
+        run: mvn --batch-mode test
+
       - run: echo "🍏 Job2-a's status is ${{ job.status }}."
 
   job2-b:
@@ -87,5 +90,8 @@ jobs:
 
       - name: Comment
         run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"
+
+      - name: Run Junit Test-Job2-b
+        run: mvn --batch-mode test
 
       - run: echo "🍏 Job2-a's status is ${{ job.status }}."

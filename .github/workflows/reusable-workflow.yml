@@ -6,6 +6,9 @@ on:
       project_type:
         required: true
         type: string
+    secrets:
+      account:
+        required: true
 
 jobs:
   job_test_tag_push:
@@ -43,6 +46,8 @@ jobs:
         run: echo "## Total code coverage report is ${{env.total_coverage}}"
 
       - run: echo "🍏 current project type is ${{inputs.project_type}}."
+
+      - run: echo "🍏 secret_account is ${{secrets.account}}."
 
       - name: Run Junit Test-Job2-a
         run: |

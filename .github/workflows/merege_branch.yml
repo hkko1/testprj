@@ -47,6 +47,8 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       project_type: DEVELOP
+    secrets:
+      account: ${{ secrets.TEST_ACCOUNT }}
 
   job2-b:
     name: upload for production if rc is not present in tag
@@ -55,3 +57,5 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       project_type: PRODUCTION
+    secrets:
+      account: ${{ secrets.TEST_ACCOUNT_PROD }}

@@ -95,8 +95,11 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
 
-      - name: Get develop account
+      - name: Get production account
         run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT_PROD }}"
+
+      - name: Get unknown account
+        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT_UNKNOWN }}"
 
       - uses: actions/download-artifact@v3
         with:

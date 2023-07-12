@@ -17,12 +17,12 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-#
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'temurin' # See 'Supported distributions' for available options
-#          java-version: '11'
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
 
       - name: Run Junit Test
         run: mvn --batch-mode test
@@ -50,6 +50,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
+
+      - name: Get develop account
+        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT }}"
+
       - uses: actions/download-artifact@v3
         with:
           name: code-coverage-report-artifact
@@ -58,7 +67,8 @@ jobs:
       - run: cat target/site/jacoco/jacoco.csv
       - name: Get total coverage percent
         run: |
-          echo "[DEVELOP] total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+
       - name: Comment
         run: echo "## [DEVELOP] Total code coverage report is ${{env.total_coverage}}"
 
@@ -79,6 +89,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
+
+      - name: Get develop account
+        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT_PROD }}"
+
       - uses: actions/download-artifact@v3
         with:
           name: code-coverage-report-artifact
@@ -88,7 +107,8 @@ jobs:
 
       - name: Get total coverage percent
         run: |
-          echo "[PRODUCTION] total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+          
 
       - name: Comment
         run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"

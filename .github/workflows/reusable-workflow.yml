@@ -2,6 +2,10 @@ name: Reusable workflow example
 
 on:
   workflow_call:
+    inputs:
+      project_type:
+        required: true
+        type: string
 
 jobs:
   job_test_tag_push:
@@ -18,11 +22,11 @@ jobs:
           java-version: '11'
 
       - name: Get develop account
-        if: contains(github.ref, '-rc')
+        if: ${{inputs.project_type == 'DEVELOP'}}
         run: echo ${{ secrets.TEST_ACCOUNT }}
 
       - name: Get production account
-        if: ${{!contains(github.ref, '-rc')}}
+        if: ${{inputs.project_type == 'PRODUCTION'}}
         run: echo ${{ secrets.TEST_ACCOUNT_PROD }}
 
       - uses: actions/download-artifact@v3
@@ -38,15 +42,7 @@ jobs:
       - name: Comment
         run: echo "## Total code coverage report is ${{env.total_coverage}}"
 
-      - name: Get project type
-        run: |
-          if [[ "${{ github.ref }}" != *"-rc"* ]]; then 
-            echo "project_type=PRODUCTION" >> "$GITHUB_ENV"
-          else  #del
-            echo "project_type=DEVELOP" >> "$GITHUB_ENV"
-          fi
-
-      - run: echo "🍏 current project type is ${{env.project_type}}."
+      - run: echo "🍏 current project type is ${{inputs.project_type}}."
 
       - name: Run Junit Test-Job2-a
         run: |

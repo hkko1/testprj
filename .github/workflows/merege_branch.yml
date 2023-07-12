@@ -44,16 +44,10 @@ jobs:
   job2-a:
     name: upload for develop
     needs: job1
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
     uses: ./.github/workflows/reusable-workflow.yml
 
   job2-b:
     name: upload for production if rc is not present in tag
     needs: job1
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
     if: ${{!contains(github.ref, '-rc')}}
     uses: ./.github/workflows/reusable-workflow.yml

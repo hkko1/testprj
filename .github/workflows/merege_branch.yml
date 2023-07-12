@@ -52,7 +52,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: code-coverage-report-artifact
+          name: code-coverage-report-artifact-job2-a
           path: target/site/jacoco
 
       - run: cat target/site/jacoco/jacoco.csv
@@ -63,7 +63,9 @@ jobs:
         run: echo "## [DEVELOP] Total code coverage report is ${{env.total_coverage}}"
 
       - name: Run Junit Test-Job2-a
-        run: mvn --batch-mode test
+        run: |
+          mvn clean
+          mvn --batch-mode test
 
       - run: echo "🍏 Job2-a's status is ${{ job.status }}."
 
@@ -79,7 +81,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: code-coverage-report-artifact
+          name: code-coverage-report-artifact-job2-b
           path: target/site/jacoco
 
       - run: cat target/site/jacoco/jacoco.csv
@@ -92,6 +94,8 @@ jobs:
         run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"
 
       - name: Run Junit Test-Job2-b
-        run: mvn --batch-mode test
+        run: |
+          mvn clean
+          mvn --batch-mode test
 
-      - run: echo "🍏 Job2-a's status is ${{ job.status }}."
+      - run: echo "🍏 Job2-b's status is ${{ job.status }}."

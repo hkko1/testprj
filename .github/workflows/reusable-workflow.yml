@@ -1,0 +1,57 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+
+jobs:
+  job_test_tag_push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
+
+      - name: Get develop account
+        if: contains(github.ref, '-rc')
+        run: echo ${{ secrets.TEST_ACCOUNT }}
+
+      - name: Get production account
+        if: ${{!contains(github.ref, '-rc')}}
+        run: echo ${{ secrets.TEST_ACCOUNT_PROD }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-report-artifact
+          path: target/site/jacoco
+
+      - run: cat target/site/jacoco/jacoco.csv
+      - name: Get total coverage percent
+        run: |
+          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
+
+      - name: Comment
+        run: echo "## Total code coverage report is ${{env.total_coverage}}"
+
+      - name: Get project type
+        run: |
+          if [[ "${{ github.ref }}" != *"-rc"* ]]; then 
+            echo "project_type=PRODUCTION" >> "$GITHUB_ENV"
+          else  #del
+            echo "project_type=DEVELOP" >> "$GITHUB_ENV"
+          fi
+
+      - run: echo "🍏 current project type is ${{project_type}}."
+
+      - name: Run Junit Test-Job2-a
+        run: |
+          mvn clean
+          mvn --batch-mode test
+
+      - run: echo "🍏 called job's status is ${{ job.status }}."
+

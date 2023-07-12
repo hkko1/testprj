@@ -47,37 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
-
-      - name: Get develop account
-        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT }}"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: code-coverage-report-artifact
-          path: target/site/jacoco
-
-      - run: cat target/site/jacoco/jacoco.csv
-      - name: Get total coverage percent
-        run: |
-          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
-
-      - name: Comment
-        run: echo "## [DEVELOP] Total code coverage report is ${{env.total_coverage}}"
-
-      - name: Run Junit Test-Job2-a
-        run: |
-          mvn clean
-          mvn --batch-mode test
-
-      - run: echo "🍏 Job2-a's status is ${{ job.status }}."
+    uses: ./.github/workflows/reusable-workflow.yml
 
   job2-b:
     name: upload for production if rc is not present in tag
@@ -86,39 +56,4 @@ jobs:
     permissions:
       contents: read
     if: ${{!contains(github.ref, '-rc')}}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
-
-      - name: Get production account
-        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT_PROD }}"
-
-      - name: Get unknown account
-        run: echo "🍏 account is ${{ secrets.TEST_ACCOUNT_UNKNOWN }}"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: code-coverage-report-artifact
-          path: target/site/jacoco
-
-      - run: cat target/site/jacoco/jacoco.csv
-
-      - name: Get total coverage percent
-        run: |
-          echo "total_coverage=$(python scripts/GetTotalPercentage.py 'target/site/jacoco/jacoco.csv')" >> "$GITHUB_ENV"
-          
-
-      - name: Comment
-        run: echo "## [PRODUCTION] Total code coverage report is ${{env.total_coverage}}"
-
-      - name: Run Junit Test-Job2-b
-        run: |
-          mvn clean
-          mvn --batch-mode test
-
-      - run: echo "🍏 Job2-b's status is ${{ job.status }}."
+    uses: ./.github/workflows/reusable-workflow.yml

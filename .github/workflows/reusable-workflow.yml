@@ -46,7 +46,7 @@ jobs:
             echo "project_type=DEVELOP" >> "$GITHUB_ENV"
           fi
 
-      - run: echo "🍏 current project type is ${{project_type}}."
+      - run: echo "🍏 current project type is ${{env.project_type}}."
 
       - name: Run Junit Test-Job2-a
         run: |

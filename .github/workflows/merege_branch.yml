@@ -52,7 +52,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: code-coverage-report-artifact-job2-a
+          name: code-coverage-report-artifact
           path: target/site/jacoco
 
       - run: cat target/site/jacoco/jacoco.csv
@@ -81,7 +81,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: code-coverage-report-artifact-job2-b
+          name: code-coverage-report-artifact
           path: target/site/jacoco
 
       - run: cat target/site/jacoco/jacoco.csv

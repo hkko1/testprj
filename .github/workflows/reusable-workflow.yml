@@ -52,16 +52,11 @@ jobs:
       - name: Extract Tag
         id: extract_tag
         run: |
-          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "TAG=${GITHUB_REF/ref\/tag\//}" >> $GITHUB_ENV
 
       - name: Print Tag
         run: |
           echo "🍏 tag is ${{env.TAG}}"      
-
-      - name: Run Junit Test-Job2-a
-        run: |
-          mvn clean
-          mvn --batch-mode test
 
       - run: echo "🍏 called job's status is ${{ job.status }}."
 

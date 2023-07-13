@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
-      - run: ${{ steps.extract_tag.outputs.TAG }}"
+      - run: echo "🍏 TAG is ${{ steps.extract_tag.outputs.TAG }}"
 
 
       - run: echo "🍏 Job1's status is ${{ job.status }}."

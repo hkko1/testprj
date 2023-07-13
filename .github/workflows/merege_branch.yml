@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    outputs:
+      TAG: ${{steps.extract_tag.outputs.TAG}}
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
@@ -39,6 +41,14 @@ jobs:
           echo "============================"
           cat target/site/jacoco/jacoco.csv
 
+      - name: Extract Tag
+        id: extract_tag
+        run: |
+          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - run: ${{ steps.extract_tag.outputs.TAG }}"
+
+
       - run: echo "🍏 Job1's status is ${{ job.status }}."
 
   job2-a:
@@ -47,8 +57,10 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       project_type: DEVELOP
+      tag: ${{needs.job1.outputs.tag}}
     secrets:
       account: ${{ secrets.TEST_ACCOUNT }}
+
 
   job2-b:
     name: upload for production if rc is not present in tag
@@ -57,5 +69,6 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       project_type: PRODUCTION
+      tag: ${{needs.job1.outputs.tag}}
     secrets:
       account: ${{ secrets.TEST_ACCOUNT_PROD }}

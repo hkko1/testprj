@@ -6,6 +6,9 @@ on:
       project_type:
         required: true
         type: string
+      tag:
+        required: true
+        type: string
     secrets:
       account:
         required: true
@@ -47,16 +50,17 @@ jobs:
 
       - run: echo "🍏 current project type is ${{inputs.project_type}}."
 
+      - run: echo "🍏 input TAG is ${{inputs.tag}}."
+
       - run: echo "🍏 secret_account is ${{secrets.account}}."
 
       - name: Extract Tag
         id: extract_tag
         run: |
-          echo "TAG=${GITHUB_REF/ref\/tag\//}" >> $GITHUB_ENV
+          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Print Tag
         run: |
           echo "🍏 tag is ${{env.TAG}}"      
 
       - run: echo "🍏 called job's status is ${{ job.status }}."
-

@@ -2,30 +2,73 @@ name: Update Images and Template
 run-name: ${{ github.actor }} is doing to update connector and applier 🚀
 on:
   push:
-    branches:
-      - 'main'
-      - 'develop'
-      - 'feature/**'
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
+
 jobs:
-  job_1:
+  job1:
     name: Setting up
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+    outputs:
+      TAG: ${{steps.extract_tag.outputs.TAG}}
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
-      - name: Print github.ref and github.base_ref
-        run: echo "REF is ${{ github.ref }}. BASE_REF is ${{ github.base_ref }}"
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Run Junit Test
+        run: mvn --batch-mode test
+
+      - name: Archive Jacoco code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report-artifact
+          path: |
+            target/site/jacoco
+
+      - run: |
+          ls target/site/jacoco/*
+          echo "============================"
+          cat target/site/jacoco/jacoco.csv
+
+      - name: Extract Tag
+        id: extract_tag
+        run: |
+          echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - run: echo "🍏 TAG is ${{ steps.extract_tag.outputs.TAG }}"
 
 
+      - run: echo "🍏 Job1's status is ${{ job.status }}."
 
+  job2-a:
+    name: upload for develop
+    needs: job1
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      project_type: DEVELOP
+      tag: ${{needs.job1.outputs.tag}}
+    secrets:
+      account: ${{ secrets.TEST_ACCOUNT }}
+
+
+  job2-b:
+    name: upload for production if rc is not present in tag
+    needs: job1
+    if: ${{!contains(github.ref, '-rc')}}
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      project_type: PRODUCTION
+      tag: ${{needs.job1.outputs.tag}}
+    secrets:
+      account: ${{ secrets.TEST_ACCOUNT_PROD }}

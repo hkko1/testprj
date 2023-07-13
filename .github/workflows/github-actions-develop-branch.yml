@@ -53,4 +53,4 @@ jobs:
             ![image](https://img.shields.io/badge/cdc--change--applier-41%brightgreen)
             ![image](https://img.shields.io/badge/cdc--embedded--connector-28%25-brightgreen)
             ${{env.total_coverage}}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "🍏 This job's status is ${{ job.status }}."2222
